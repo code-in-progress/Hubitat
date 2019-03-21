@@ -1,0 +1,13 @@
+{
+  "name": "Hubitat Elevation Logging Utility",
+  "version": "0.0.2",
+  "description": "Hubitat Elevation Logging Utility is an easy to use NodeJS application that listens to event and log outputs from your Hubitat Elevation hub and writes them to a variety of sources.",
+  "main": "logs.js",
+  "author": "Bill Schuffman",
+  "license": "ISC",
+  "dependencies": {
+    "csv-writer": "^1.2.0",
+    "websocket": "^1.0.28",
+    "mysql": "^2.0.0"
+  }
+}
