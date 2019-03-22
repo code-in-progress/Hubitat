@@ -17,7 +17,7 @@ Installation:
   2. Download a copy of the code.
   3. In your favorite terminal, go into the directory where you downloaded the code.
   4. run ```npm install```
-  5. Open config.json in your favorite editor.
+  5. Copy config.json.dist to config.json and config.json in your favorite editor.
   6. The important sections are:
    
 ```
