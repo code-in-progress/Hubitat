@@ -57,18 +57,21 @@ You need to enable either events or logs (or both).
       ],
 ```
 
-Subscriptions are a list of devices that you want to capture events for. You can just use an empty array (```subscriptions: []```) to capture all devices should you want to. On chatty networks, this **will** generate **large** log files.
+Subscriptions are a list of devices that you want to capture events for. You can just use an empty array (```subscriptions: []```) to capture all devices should you want to. On chatty networks, this **will** generate **large** log files. If you've enabled the webserver in the config file, you can go to your browser to select devices you want to create subscriptions. To get to the device selection page, go to http://[ip_where_node_id running]:[port you setup in your config]/get_devices. This uses the Maker API to get all the devices you have authorized on the hub and will present you a list that you can select from. Click on submit when you are done and your subscriptions will be saved. Restart the nodejs process and the subscriptions will be processed.
       
 ```
-"destinations": [
-{
-  "type": "file",
-  "enabled": true,
-  "path": "he-events.log"
+"writers": {
+    "file" : {
+      "enable": true,
+      "debug": true,
+      "module": "./writers/file.js",
+      "path": "he-events.log"
 },
 ```
 
-Destinations are where events and logs are written to. Currently, 3 are working (and tested): File logger, CSV logger, and MySQL. The subsections **should** be self-explanitory. Path needs to be a path (and filename) that is accessible by the process running nodejs. Any destinations that you don't want or need can simply be disabled (removing the sections breaks the code for now ;) by setting "enable" : false)
+Writers are where events and logs are written to. Currently, 3 are working (and tested): File logger, CSV logger, and MySQL. The subsections **should** be self-explanitory. Path needs to be a path (and filename) that is accessible by the process running nodejs. Any destinations that you don't want or need can simply be disabled (removing the sections breaks the code for now ;) by setting "enable" : false)
+
+Writers for other backends should be able to be created easily. To create your own writer, create a file in /writers/ and name it accordingly with a .js ending. Writers must expose a write(data, writer) method in module.exports. After that, in the config.json file, create a new section in "writers". You can name it whatever you want, but the "module" property needs to be set properly. Once you restart the nodejs process, your new writer will be available.
 
 5. Run ```node logging.js```
 
