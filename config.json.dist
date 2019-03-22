@@ -1,15 +1,15 @@
 {
   "app": {
     "name": "Hubitat Elevation Logging Utility",
-    "debug": true,
+    "debug": false,
     "webserver": {
       "enable": true,
-      "port": 8887,
-      "maker_api_url": "http://192.168.1.110/apps/api/37/devices?access_token=da46a344-ef7e-43e7-a448-a2e698eb9cb4"
+      "port": 80,
+      "maker_api_url": "[maker_api_url] Must be the maker api url for getting the list of devices."
     }
   },
   "hub": {
-    "hub_host": "192.168.1.110",
+    "hub_host": "[your_hub_host]",
     "events": {
         "enabled": true,
         "subscriptions": [ ],
@@ -87,12 +87,12 @@
                 "enable": true,
                 "debug" : false,
                 "module": "./writers/mysql.js",
-                "host": "192.168.1.100",
-                "port": "3306",
-                "user": "root",
-                "pass": "1234",
-                "db": "hubitat_logging",
-                "table": "dev_events",
+                "host": "[MYSQL_HOST]",
+                "port": "[MYSQL_PORT (3306)]",
+                "user": "[MYSQL_USER]",
+                "pass": "[MYSQL_PASS]",
+                "db": "[DATABASE_YOU_CREATE]",
+                "table": "[TABLE_YOU_CREATE]",
                 "columns": [
                 "source",
                 "name",
@@ -232,12 +232,12 @@
           "enable": true,
           "debug" : false,
           "module": "./writers/mysql.js",
-          "host": "192.168.1.100",
-          "port": "3306",
-          "user": "root",
-          "pass": "1234",
-          "db": "hubitat_logging",
-          "table": "dev_logs",
+          "host": "[MYSQL_HOST]",
+          "port": "[MYSQL_PORT (3306)]",
+          "user": "[MYSQL_USER]",
+          "pass": "[MYSQL_PASS]",
+          "db": "[DATABASE_YOU_CREATE]",
+          "table": "[TABLE_YOU_CREATE]",
           "columns": [
             "name",
             "msg",

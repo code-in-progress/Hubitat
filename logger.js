@@ -116,29 +116,18 @@ if(logs.enabled) {
     
     ws.on('message', function incoming(data) {
         var out_data = getLogData(JSON.parse(data));
-        var dests = logs.destinations;    
-        dests.forEach(function(dest) {
-            if(dest.enabled) {
-                switch(dest.type) {
-                    case "file" :
-                        var logs_file_writer = require('./writers/file');
-                        logs_file_writer.write(out_data, dest);
-                        break;
-                    case "csv" :
-                        var logs_csv_writer = require('./writers/csv');
-                        logs_csv_writer.write(out_data, dest);
-                        break;
-                    case "mysql": 
-                        var logs_mysql_writer = require('./writers/mysql');
-                        logs_mysql_writer.write(out_data, dest);
-                        break;
-                    case "console" : 
-                        var logs_console_writer = require('./writers/console');
-                        logs_console_writer.write(out_data, dest);
-                        break;
-                }
+
+        if(global.debug) console.log("Waiting on events");
+        
+        var writers = logs.writers;
+
+        for(var w in writers) {
+            var writer = writers[w];
+            if(writer.enable) {
+                var o = require(writer.module);
+                o.write(out_data, writer);
             }
-        });
+        }
     });
 }
 
@@ -210,8 +199,8 @@ function config_checks() {
             msg.push("Socket name is required for logs. Please set the socket name to 'logsocket' (or whatever the current name is).");
         }
         
-        if(host.logs.destinations === undefined || host.logs.destinations.length == 0) {
-            msg.push("No log destinations have been defined.");
+        if(host.logs.writers === undefined || host.logs.writers == 0) {
+            msg.push("No log writers have been defined.");
         }
     }
 
@@ -222,9 +211,4 @@ function config_checks() {
         return false;
     }
     else { console.log("Configuration check passed"); return true; }
-}
-
-function output(msg) {
-    if(global.debug)
-        console.log(JSON.stringify(msg));
 }
