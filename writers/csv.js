@@ -5,19 +5,19 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const debug = require('./debug.js');
 
 module.exports = {
-    write : function (data, dest) {
+    write : function (data, writer) {
         var csvWriter = createCsvWriter({
-            path: dest.path,
-            header: dest.headers,
+            path: writer.path,
+            header: writer.headers,
             append: true,
-            fieldDelimiter: dest.delimiter
+            fieldDelimiter: writer.delimiter
         });
 
         //Appending to a CSV doesn't write the header. This creates the header if the file doesn't exist.
-        if (!fs.existsSync(dest.path)) {
-            const csvStringifier = createCsvStringifier({ header: dest.headers });
+        if (!fs.existsSync(writer.path)) {
+            const csvStringifier = createCsvStringifier({ header: writer.headers });
             var h = csvStringifier.getHeaderString();
-            fs.writeFile(dest.path, h, function (err) {
+            fs.writeFile(writer.path, h, function (err) {
                 if (err)
                     throw err;
             });
@@ -25,6 +25,6 @@ module.exports = {
         var record = [data];
         csvWriter.writeRecords(record);
 
-        if(dest.debug) debug.write("Wrote to ", dest.path);
+        if(writer.debug) debug.write("Wrote to ", writer.path);
     }
 }
