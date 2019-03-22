@@ -39,7 +39,7 @@ module.exports = {
             var val = JSON.stringify(d);
             val = val.replace(/"/g, '');
             val = val.replace(/'/g,"\'");
-            values.push("'" + val + "'");
+            values.push(pool.escape(val));
           }
             
           else
