@@ -2,6 +2,7 @@ const fs = require('fs');
 const path_util = require('path');
 const createCsvStringifier = require('csv-writer').createObjectCsvStringifier;
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const debug = require('./debug.js');
 
 module.exports = {
     write : function (data, dest) {
@@ -23,5 +24,7 @@ module.exports = {
         }
         var record = [data];
         csvWriter.writeRecords(record);
+
+        if(dest.debug) debug.write("Wrote to ", dest.path);
     }
 }

@@ -1,0 +1,256 @@
+{
+  "app": {
+    "name": "Hubitat Elevation Logging Utility",
+    "debug": false,
+    "webserver": {
+      "enable": true,
+      "port": 80,
+      "maker_api_url": "[maker_api_url] Must be the maker api url for getting the list of devices."
+    }
+  },
+  "hub": {
+    "hub_host": "[your_hub_host]",
+    "events": {
+        "enabled": true,
+        "subscriptions": [ ],
+        "socket_name": "eventsocket",
+        "writers": {
+            "console" : {
+                "enable" : false,
+                "debug" : false,
+                "module": "./writers/console.js"
+            },
+            "file" : {
+                "enable": false,
+                "debug" : false,
+                "module": "./writers/file.js",
+                "path": "he-events.log"
+            },
+            "csv" : {
+                "enable": false,
+                "debug" : false,
+                "module": "./writers/csv.js",
+                "path": "he-events.csv",
+                "delimiter": ",",
+                "headers": [
+                {
+                    "id": "source",
+                    "title": "source"
+                },
+                {
+                    "id": "name",
+                    "title": "name"
+                },
+                {
+                    "id": "displayName",
+                    "title": "displayName"
+                },
+                {
+                    "id": "value",
+                    "title": "value"
+                },
+                {
+                    "id": "unit",
+                    "title": "unit"
+                },
+                {
+                    "id": "deviceId",
+                    "title": "deviceId"
+                },
+                {
+                    "id": "hubId",
+                    "title": "hubId"
+                },
+                {
+                    "id": "locationId",
+                    "title": "locationId"
+                },
+                {
+                    "id": "installedAppId",
+                    "title": "installedAppId"
+                },
+                {
+                    "id": "descriptionText",
+                    "title": "descriptionText"
+                },
+                {
+                    "id": "date",
+                    "title": "date"
+                },
+                {
+                    "id": "timestamp",
+                    "title": "timestamp"
+                }
+                ]
+            },
+            "mysql" : {
+                "enable": true,
+                "debug" : false,
+                "module": "./writers/mysql.js",
+                "host": "[MYSQL_HOST]",
+                "port": "[MYSQL_PORT (3306)]",
+                "user": "[MYSQL_USER]",
+                "pass": "[MYSQL_PASS]",
+                "db": "[DATABASE_YOU_CREATE]",
+                "table": "[TABLE_YOU_CREATE]",
+                "columns": [
+                "source",
+                "name",
+                "displayName",
+                "value",
+                "unit",
+                "deviceId",
+                "hubId",
+                "locationId",
+                "installedAppId",
+                "descriptionText"
+                ],
+                "customInsertStmt": null,
+                "preSqlStatements": null,
+                "postSqlStatements": null
+            },
+            "influxdb" : {
+                "enable": true,
+                "debug" : true,
+                "module": "./writers/influxdb.js",
+                "host": "192.168.1.100",
+                "database": "hubitat",
+                "attributes" : [
+                    "acceleration",
+                    "alarm",
+                    "battery",
+                    "presence",
+                    "button",
+                    "carbonMonoxide",
+                    "carbonDioxide",
+                    "hue",
+                    "saturation",
+                    "color",
+                    "consumableStatus",
+                    "contact",
+                    "door",
+                    "energy",
+                    "humidity",
+                    "illuminance",
+                    "lock",
+                    "motion",
+                    "status",
+                    "level",
+                    "trackDescription",
+                    "trackData",
+                    "mute",
+                    "steps",
+                    "goal",
+                    "pH",
+                    "power",
+                    "voltage",
+                    "current",
+                    "powerFactor",
+                    "presence",
+                    "pressure",
+                    "shock",
+                    "lqi",
+                    "rssi",
+                    "sleeping",
+                    "smoke",
+                    "sound",
+                    "soundPressureLevel",
+                    "switch",
+                    "level",
+                    "tamper",
+                    "temperature",
+                    "heatingSetpoint",
+                    "coolingSetpoint",
+                    "thermostatSetpoint",
+                    "thermostatMode",
+                    "thermostatFanMode",
+                    "thermostatOperatingState",
+                    "thermostatSetpointMode",
+                    "scheduledSetpoint",
+                    "optimisation",
+                    "windowFunction",
+                    "threeAxis",
+                    "touch",
+                    "ultravioletIndex",
+                    "contact",
+                    "voltage",
+                    "water",
+                    "windowShade"
+                ]
+            }
+        }
+    },
+    "logs": {
+      "enabled": true,
+      "socket_name": "logsocket",
+      "writers": {
+        "console" : {
+          "enable" : false,
+          "debug" : false,
+          "module": "./writers/console.js"
+        },
+        "file" : {
+          "enable": false,
+          "debug" : false,
+          "module": "./writers/file.js",
+          "path": "he-logs.log"
+        },
+        "csv" : {
+          "enable": false,
+          "debug": false,
+          "module": "./writers/csv.js",
+          "path": "he-logs.csv",
+          "delimiter": ",",
+          "headers": [
+            {
+              "id": "name",
+              "title": "name"
+            },
+            {
+              "id": "msg",
+              "title": "msg"
+            },
+            {
+              "id": "id",
+              "title": "id"
+            },
+            {
+              "id": "time",
+              "title": "time"
+            },
+            {
+              "id": "type",
+              "title": "type"
+            },
+            {
+              "id": "level",
+              "title": "level"
+            }
+          ]
+        },
+        "mysql" : {
+          "enable": true,
+          "debug" : false,
+          "module": "./writers/mysql.js",
+          "host": "[MYSQL_HOST]",
+          "port": "[MYSQL_PORT (3306)]",
+          "user": "[MYSQL_USER]",
+          "pass": "[MYSQL_PASS]",
+          "db": "[DATABASE_YOU_CREATE]",
+          "table": "[TABLE_YOU_CREATE]",
+          "columns": [
+            "name",
+            "msg",
+            "id",
+            "time",
+            "type",
+            "level"
+          ],
+          "customInsertStmt": null,
+          "preSqlStatements": null,
+          "postSqlStatements": null
+        }
+      }
+    }
+  }
+}

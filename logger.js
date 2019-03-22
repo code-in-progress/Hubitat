@@ -3,6 +3,7 @@ const fs = require('fs');
 const path_util = require('path');
 const sprintf = require('sprintf-js').sprintf;
 const assert = require('assert');
+const debug = require('./writers/debug.js');
 
 var config = require('./config.json');
 
@@ -19,6 +20,9 @@ var hub = config.hub;
 var events = hub.events;
 var logs = hub.logs;
 
+global.hub = config.hub;
+global.events = hub.events;
+global.logs = hub.logs;
 
 var webserver = config.app.webserver;
 if(webserver.enable) {
@@ -26,10 +30,9 @@ if(webserver.enable) {
     const server = express();
     const bodyParser = require('body-parser')
     
-    server.use(bodyParser.urlencoded({ extended: false }))
+    server.use(bodyParser.urlencoded({ extended: false }));
 
     server.post('/select_devices', function(req, res) {
-        console.log(req.body);
         var html = '<html><title>Selected Devices</title><body><div>You selected the following devices:</div>';
         
         fs.writeFile("config.json.bak", JSON.stringify(config, null, 2), function (err) {
@@ -88,7 +91,7 @@ if(events.enabled) {
     
     ws.on('message', function incoming(data) {
         var out_data = getEventData(JSON.parse(data));
-        var dests = events.destinations;
+        var writers = events.writers;
         
         if(subscriptions !== null && Array.isArray(subscriptions) && subscriptions.length > 0) {
             inSubs = subscriptions.indexOf(out_data.deviceId) !== -1;
@@ -96,32 +99,13 @@ if(events.enabled) {
         else { inSubs = true; }
         
         if(inSubs) {
-            dests.forEach(function(dest) {
-                if(dest.enabled) {
-                    switch(dest.type) {
-                        case "file" :
-                            var file_writer = require('./writers/file');
-                            file_writer.write(out_data, dest);
-                            break;
-                        case "csv" :
-                            var csv_writer = require('./writers/csv');
-                            csv_writer.write(out_data, dest);
-                            break;
-                        case "mysql": 
-                            var mysql_writer = require('./writers/mysql');
-                            mysql_writer.write(out_data, dest);
-                            break;
-                        case "influxdb": 
-                            var influxdb_writer = require('./writers/influxdb');
-                            influxdb_writer.write(out_data, dest);
-                            break;
-                        case "console" : 
-                            var console_writer = require('./writers/console');
-                            console_writer.write(out_data, dest);
-                            break;
-                    }
+            for(var w in writers) {
+                var writer = writers[w];
+                if(writer.enable) {
+                    var o = require(writer.module);
+                    o.write(out_data, writer);
                 }
-            });
+            }
         }
     });
 }
@@ -147,10 +131,6 @@ if(logs.enabled) {
                     case "mysql": 
                         var logs_mysql_writer = require('./writers/mysql');
                         logs_mysql_writer.write(out_data, dest);
-                        break;
-                    case "influxdb": 
-                        var logs_influxdb_writer = require('./writers/influxdb');
-                        logs_influxdb_writer.write(out_data, dest);
                         break;
                     case "console" : 
                         var logs_console_writer = require('./writers/console');
@@ -220,8 +200,8 @@ function config_checks() {
             msg.push("Socket name is required for events. Please set the socket name to 'eventsocket' (or whatever the current name is).");
         }
         
-        if(host.events.destinations === undefined || host.events.destinations.length == 0) {
-            msg.push("No event destinations have been defined.");
+        if(host.events.writers === undefined || host.events.writers.length == 0) {
+            msg.push("No event writers have been defined.");
         }
     }
 

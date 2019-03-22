@@ -1,5 +1,7 @@
 const mysql = require('mysql');
 const sprintf = require('sprintf-js').sprintf;
+const debug = require('./debug.js');
+
 
 module.exports = {
   write : function (data, dest) {
@@ -17,7 +19,7 @@ module.exports = {
       if(dest.preSqlStatements !== null) {
         pool.query(dest.preSqlStatements, function (err, result) {
           if (err) throw err;
-          if(global.debug) console.log("Result: " + JSON.stringify(result));
+          if(dest.debug) debug.writeJS("Result", result);
         });
       }
     
@@ -30,9 +32,11 @@ module.exports = {
       values = [];
 
       for(var o in data) {
-        if(global.debug) console.log("Data: " + JSON.stringify(o));
-        if(global.debug) console.log("Columns: " + dest.columns.indexOf(o));
-
+        if(dest.debug) {
+          debug.writeJS("Data", o);
+          debug.write("Columns", dest.columns.indexOf(o));
+        }
+        
         if(dest.columns.indexOf(o) !== -1) {
           var d = data[o];
           if(d !== null) {
@@ -51,17 +55,18 @@ module.exports = {
 
       stmt += ')';
 
-      if(global.debug) console.log("Writing to MYSQL: " + stmt);
+      if(dest.debug) debug.write("Writing to MYSQL", stmt);
+
       
       pool.query(stmt, function (err, result) {
         if (err) throw err;
-        if(global.debug) console.log("Result: " + JSON.stringify(result));
+        if(dest.debug) debug.writeJS("Result", result);
       });
 
       if(dest.postSqlStatements !== null) {
         pool.query(dest.postSqlStatements, function (err, result) {
           if (err) throw err;
-          if(global.debug) console.log("Result: " + JSON.stringify(result));
+          if(dest.debug) debug.writeJS("Result", result);
         });
       }
     }  
