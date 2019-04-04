@@ -1,1 +1,600 @@
-[{"id":"d3fe7906.c98cf8","type":"tab","label":"Share InfluxDB","disabled":false,"info":""},{"id":"85925615.c36e68","type":"websocket in","z":"d3fe7906.c98cf8","name":"Hubitat Event Socket Prod","server":"","client":"ad49e56f.20d8f8","x":150,"y":80,"wires":[["64484b87.e62d44"]]},{"id":"64484b87.e62d44","type":"filter","z":"d3fe7906.c98cf8","name":"Filter attributes","property":"name","propertyType":"msg","asArray":false,"itemProperty":"","itemPropertyType":"item","rules":[{"t":"eq","v":"acceleration","vt":"str","output":1},{"t":"eq","v":"alarm","vt":"str","output":1},{"t":"eq","v":"battery","vt":"str","output":1},{"t":"eq","v":"presence","vt":"str","output":1},{"t":"eq","v":"carbonMonoxide","vt":"str","output":1},{"t":"eq","v":"carbonDioxide","vt":"str","output":1},{"t":"eq","v":"contact","vt":"str","output":1},{"t":"eq","v":"door","vt":"str","output":1},{"t":"eq","v":"energy","vt":"str","output":1},{"t":"eq","v":"humidity","vt":"str","output":1},{"t":"eq","v":"illuminance","vt":"str","output":1},{"t":"eq","v":"lock","vt":"str","output":1},{"t":"eq","v":"motion","vt":"str","output":1},{"t":"eq","v":"status","vt":"str","output":1},{"t":"eq","v":"steps","vt":"str","output":1},{"t":"eq","v":"goal","vt":"str","output":1},{"t":"eq","v":"pH","vt":"str","output":1},{"t":"eq","v":"power","vt":"str","output":1},{"t":"eq","v":"voltage","vt":"str","output":1},{"t":"eq","v":"current","vt":"str","output":1},{"t":"eq","v":"powerFactor","vt":"str","output":1},{"t":"eq","v":"presence","vt":"str","output":1},{"t":"eq","v":"pressure","vt":"str","output":1},{"t":"eq","v":"shock","vt":"str","output":1},{"t":"eq","v":"lqi","vt":"str","output":1},{"t":"eq","v":"rssi","vt":"str","output":1},{"t":"eq","v":"sleeping","vt":"str","output":1},{"t":"eq","v":"smoke","vt":"str","output":1},{"t":"eq","v":"tamper","vt":"str","output":1},{"t":"eq","v":"temperature","vt":"str","output":1},{"t":"eq","v":"heatingSetpoint","vt":"str","output":1},{"t":"eq","v":"thermostatSetpoint","vt":"str","output":1},{"t":"eq","v":"thermostatMode","vt":"str","output":1},{"t":"eq","v":"thermostatFanMode","vt":"str","output":1},{"t":"eq","v":"thermostatOperatingState","vt":"str","output":1},{"t":"eq","v":"thermostatSetpointMode","vt":"str","output":1},{"t":"eq","v":"scheduledSetpoint","vt":"str","output":1},{"t":"eq","v":"optimisation","vt":"str","output":1},{"t":"eq","v":"windowFunction","vt":"str","output":1},{"t":"eq","v":"threeAxis","vt":"str","output":1},{"t":"eq","v":"touch","vt":"str","output":1},{"t":"eq","v":"ultravioletIndex","vt":"str","output":1},{"t":"eq","v":"contact","vt":"str","output":1},{"t":"eq","v":"voltage","vt":"str","output":1},{"t":"eq","v":"water","vt":"str","output":1},{"t":"eq","v":"windowShade","vt":"str","output":1},{"t":"eq","v":"switch","vt":"str","output":1},{"t":"eq","v":"level","vt":"str","output":1}],"checkall":"false","outputs":1,"x":380,"y":80,"wires":[["7891c733.1ec2d8"]]},{"id":"7891c733.1ec2d8","type":"function","z":"d3fe7906.c98cf8","name":"Set Influx Data","func":"\nconst ACTIVE = 'active';\nconst CLOSED = 'closed';\nconst DETECTED = 'detected';\nconst FOLLOW_SCHEDULE = 'follow schedule';\nconst GOOD = 'good';\nconst HEATING = 'heating';\nconst LOCKED = 'locked';\nconst MUTED = 'muted';\nconst OFF = 'off';\nconst ON = 'on';\nconst OPEN = 'open';\nconst PRESENT = 'present';\nconst PUSHED = 'pushed';\nconst SLEEPING = 'sleeping';\nconst TOUCHED = 'touched';\nconst WET = 'wet';\n\nvar v = {\n    'value' : null,\n    'isBinary' : null\n};\n\nif(msg.name == \"acceleration\") {\n    v.value = (msg.value == ACTIVE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"alarm\") {\n    v.value = (msg.value != OFF ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"button\") {\n    v.value = (msg.value != PUSHED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"carbonMonoxide\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"consumableStatus\") {\n    v.value = (msg.value == GOOD ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"contact\") {\n    v.value = (msg.value == OPEN ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"door\") {\n    v.value = (msg.value != OPEN ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"lock\") {\n    v.value = (msg.value == LOCKED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"motion\") {\n    v.value = (msg.value == ACTIVE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"mute\") {\n    v.value = (msg.value == MUTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"presence\") {\n    v.value = (msg.value == PRESENT ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"shock\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"sleeping\") {\n    v.value = (msg.value == SLEEPING ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"smoke\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"sound\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"switch\") {\n    v.value = (msg.value == ON ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"tamper\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"thermostatMode\") {\n    v.value = (msg.value != OFF ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"thermostatFanMode\") {\n    v.value = (msg.value != OFF ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"thermostatOperatingState\") {\n    v.value = (msg.value == HEATING ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"thermostatSetpointMode\") {\n    v.value = (msg.value != FOLLOW_SCHEDULE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"touch\") {\n    v.value = (msg.value != TOUCHED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"optimisation\") {\n    v.value = (msg.value == ACTIVE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"windowFunction\") {\n    v.value = (msg.value == ACTIVE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"water\") {\n    v.value = (msg.value == WET ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"windowShade\") {\n    v.value = (msg.value == CLOSED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"threeAxis\") {\n    /*var vz = msg.value.split(',');\n    var x = vz[0];\n    var y = vz[1];\n    var z = vz[2];\n    v.value = {\n        x: vz[0],\n        y: vz[1],\n        z: vz[2]\n    };*/\n    v.value = msg.value;\n    v.isBinary = false;\n}\nelse if (typeof msg.value === 'string' && msg.value.match(/.*[^0-9\\.,-].*/)) { // match if any characters are not digits, period, comma, or hyphen.\n    v.value = '\"' + msg.value + '\"';\n    v.isBinary = false;\n}\n\n// Catch any other general numerical event (carbonDioxide, power, energy, humidity, level, temperature, ultravioletIndex, voltage, etc).\nelse {\n    v.value = Number(msg.value);\n    v.isBinary = false;\n}\n\nif (v.isBinary)\n{\n    msg.payload = [\n        {\n            measurement: msg.name,\n            fields: {\n                value: msg.value,\n                valueBinary: v.value\n            },\n            tags:{\n                hub: msg.hubId ? msg.hubId : \"HE1\",\n                deviceId: msg.deviceId,\n                displayName: msg.displayName,\n                unit: msg.unit\n            },\n            timestamp: new Date()\n        }\n    ]    \n}\nelse\n{\n    msg.payload = [\n        {\n            measurement: msg.name,\n            fields: {\n                value: (Array.isArray(v.value) ? v.value.join(',') : v.value),\n            },\n            tags:{\n                hub: msg.hubId ? msg.hubId : \"HE1\",\n                deviceId: msg.deviceId,\n                displayName: msg.displayName,\n                unit: msg.unit\n            },\n            timestamp: new Date()\n        }\n    ]\n}\n//console.log(util.inspect(msg, {showHidden: false, depth: null}))\n\nreturn msg;","outputs":1,"noerr":0,"x":960,"y":120,"wires":[["a53b5b74.207808"]]},{"id":"a53b5b74.207808","type":"influxdb batch","z":"d3fe7906.c98cf8","influxdb":"227f748e.a9c7fc","precision":"","retentionPolicy":"","name":"","x":1210,"y":120,"wires":[]},{"id":"e021ed07.18972","type":"http request","z":"d3fe7906.c98cf8","name":"Get Temps","method":"GET","ret":"obj","paytoqs":false,"url":"","tls":"","proxy":"","x":310,"y":200,"wires":[["ed375789.8968b8"]]},{"id":"d9fa6d0a.a765a","type":"splitter","z":"d3fe7906.c98cf8","name":"Split payload array","property":"payload","x":490,"y":240,"wires":[["51241053.5bca9"]]},{"id":"e862a8ef.6323e8","type":"comment","z":"d3fe7906.c98cf8","name":"Calls Maker API every hour","info":"","x":130,"y":140,"wires":[]},{"id":"e0173fa3.3fae2","type":"inject","z":"d3fe7906.c98cf8","name":"","topic":"","payload":"","payloadType":"date","repeat":"3600","crontab":"","once":true,"onceDelay":0.1,"x":110,"y":220,"wires":[["e021ed07.18972","831162e8.546b"]]},{"id":"5e2a7ded.834124","type":"catch","z":"d3fe7906.c98cf8","name":"","scope":["e862a8ef.6323e8","4092165a.b0fc58","ac83b17c.ad064","64484b87.e62d44","831162e8.546b","e021ed07.18972","85925615.c36e68","a53b5b74.207808","9ed67807.976e38","523d6a99.b7df54","7891c733.1ec2d8","d9fa6d0a.a765a","e0173fa3.3fae2"],"uncaught":false,"x":100,"y":560,"wires":[["4092165a.b0fc58","ac83b17c.ad064"]]},{"id":"4092165a.b0fc58","type":"change","z":"d3fe7906.c98cf8","name":"Convert error.message to msg.payload","rules":[{"t":"set","p":"payload","pt":"msg","to":"HE Logging has thrown an error","tot":"str"}],"action":"","property":"","from":"","to":"","reg":false,"x":350,"y":560,"wires":[["523d6a99.b7df54"]]},{"id":"523d6a99.b7df54","type":"debug","z":"d3fe7906.c98cf8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"true","x":610,"y":560,"wires":[]},{"id":"ac83b17c.ad064","type":"logger","z":"d3fe7906.c98cf8","name":"Error Logger","filename":"/var/log/hubitat/nr-inf-errors.log","maxsize":"10","maxfiles":10,"complete":"true","console":false,"file":true,"debug":false,"zip":true,"logtype":"info","x":270,"y":520,"wires":[]},{"id":"831162e8.546b","type":"http request","z":"d3fe7906.c98cf8","name":"Get Batteries","method":"GET","ret":"obj","paytoqs":false,"url":"","tls":"","proxy":"","x":310,"y":240,"wires":[["d9fa6d0a.a765a"]]},{"id":"51241053.5bca9","type":"function","z":"d3fe7906.c98cf8","name":"Transform Battery","func":"var op = msg.payload;\n\nmsg.name = \"battery\";\nmsg.value = (op.attributes['battery'] === null ? 0 : op.attributes['battery']);\nmsg.deviceId = op.id;\nmsg.displayName = op.label;\nmsg.unit = '%';\n\nreturn msg;","outputs":1,"noerr":0,"x":690,"y":240,"wires":[["7891c733.1ec2d8"]]},{"id":"ed375789.8968b8","type":"splitter","z":"d3fe7906.c98cf8","name":"Split payload array","property":"payload","x":490,"y":200,"wires":[["3f62a5ce.e5f93a"]]},{"id":"3f62a5ce.e5f93a","type":"function","z":"d3fe7906.c98cf8","name":"Transform Temp","func":"var op = msg.payload;\n\nmsg.name = \"temperature\";\nmsg.value = op.attributes['temperature'];\nmsg.deviceId = op.id;\nmsg.displayName = op.label;\nmsg.unit = 'F';\n\nreturn msg;","outputs":1,"noerr":0,"x":680,"y":200,"wires":[["7891c733.1ec2d8"]]},{"id":"ad49e56f.20d8f8","type":"websocket-client","z":"","path":"ws://192.168.1.110/eventsocket","tls":"","wholemsg":"true"},{"id":"227f748e.a9c7fc","type":"influxdb","z":"","hostname":"localhost","port":"8086","protocol":"http","database":"hubitat_nodered","name":"","usetls":false,"tls":""}]
+[
+    {
+        "id": "d3fe7906.c98cf8",
+        "type": "tab",
+        "label": "Share InfluxDB",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "85925615.c36e68",
+        "type": "websocket in",
+        "z": "d3fe7906.c98cf8",
+        "name": "Hubitat Event Socket Prod",
+        "server": "",
+        "client": "ad49e56f.20d8f8",
+        "x": 150,
+        "y": 80,
+        "wires": [
+            [
+                "64484b87.e62d44"
+            ]
+        ]
+    },
+    {
+        "id": "64484b87.e62d44",
+        "type": "filter",
+        "z": "d3fe7906.c98cf8",
+        "name": "Filter attributes",
+        "property": "name",
+        "propertyType": "msg",
+        "asArray": false,
+        "itemProperty": "",
+        "itemPropertyType": "item",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "acceleration",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "alarm",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "battery",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "presence",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "carbonMonoxide",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "carbonDioxide",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "contact",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "door",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "energy",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "humidity",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "illuminance",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "lock",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "motion",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "status",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "steps",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "goal",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "pH",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "power",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "voltage",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "current",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "powerFactor",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "presence",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "pressure",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "shock",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "lqi",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "rssi",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "sleeping",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "smoke",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "tamper",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "temperature",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "heatingSetpoint",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "thermostatSetpoint",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "thermostatMode",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "thermostatFanMode",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "thermostatOperatingState",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "thermostatSetpointMode",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "scheduledSetpoint",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "optimisation",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "windowFunction",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "threeAxis",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "touch",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "ultravioletIndex",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "contact",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "voltage",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "water",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "windowShade",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "switch",
+                "vt": "str",
+                "output": 1
+            },
+            {
+                "t": "eq",
+                "v": "level",
+                "vt": "str",
+                "output": 1
+            }
+        ],
+        "checkall": "false",
+        "outputs": 1,
+        "x": 380,
+        "y": 80,
+        "wires": [
+            [
+                "7891c733.1ec2d8"
+            ]
+        ]
+    },
+    {
+        "id": "7891c733.1ec2d8",
+        "type": "function",
+        "z": "d3fe7906.c98cf8",
+        "name": "Set Influx Data",
+        "func": "\nconst ACTIVE = 'active';\nconst CLOSED = 'closed';\nconst DETECTED = 'detected';\nconst FOLLOW_SCHEDULE = 'follow schedule';\nconst GOOD = 'good';\nconst HEATING = 'heating';\nconst LOCKED = 'locked';\nconst MUTED = 'muted';\nconst OFF = 'off';\nconst ON = 'on';\nconst OPEN = 'open';\nconst PRESENT = 'present';\nconst PUSHED = 'pushed';\nconst SLEEPING = 'sleeping';\nconst TOUCHED = 'touched';\nconst WET = 'wet';\n\nvar v = {\n    'value' : null,\n    'isBinary' : null\n};\n\nif(msg.name == \"acceleration\") {\n    v.value = (msg.value == ACTIVE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"alarm\") {\n    v.value = (msg.value != OFF ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"button\") {\n    v.value = (msg.value != PUSHED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"carbonMonoxide\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"consumableStatus\") {\n    v.value = (msg.value == GOOD ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"contact\") {\n    v.value = (msg.value == OPEN ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"door\") {\n    v.value = (msg.value != OPEN ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"lock\") {\n    v.value = (msg.value == LOCKED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"motion\") {\n    v.value = (msg.value == ACTIVE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"mute\") {\n    v.value = (msg.value == MUTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"presence\") {\n    v.value = (msg.value == PRESENT ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"shock\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"sleeping\") {\n    v.value = (msg.value == SLEEPING ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"smoke\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"sound\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"switch\") {\n    v.value = (msg.value == ON ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"tamper\") {\n    v.value = (msg.value == DETECTED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"thermostatMode\") {\n    v.value = (msg.value != OFF ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"thermostatFanMode\") {\n    v.value = (msg.value != OFF ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"thermostatOperatingState\") {\n    v.value = (msg.value == HEATING ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"thermostatSetpointMode\") {\n    v.value = (msg.value != FOLLOW_SCHEDULE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"touch\") {\n    v.value = (msg.value != TOUCHED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"optimisation\") {\n    v.value = (msg.value == ACTIVE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"windowFunction\") {\n    v.value = (msg.value == ACTIVE ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"water\") {\n    v.value = (msg.value == WET ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"windowShade\") {\n    v.value = (msg.value == CLOSED ? 1 : 0);\n    v.isBinary = true;\n}\n\nelse if(msg.name == \"threeAxis\") {\n    /*var vz = msg.value.split(',');\n    var x = vz[0];\n    var y = vz[1];\n    var z = vz[2];\n    v.value = {\n        x: vz[0],\n        y: vz[1],\n        z: vz[2]\n    };*/\n    v.value = msg.value;\n    v.isBinary = false;\n}\nelse if (typeof msg.value === 'string' && msg.value.match(/.*[^0-9\\.,-].*/)) { // match if any characters are not digits, period, comma, or hyphen.\n    v.value = '\"' + msg.value + '\"';\n    v.isBinary = false;\n}\n\n// Catch any other general numerical event (carbonDioxide, power, energy, humidity, level, temperature, ultravioletIndex, voltage, etc).\nelse {\n    v.value = Number(msg.value);\n    v.isBinary = false;\n}\n\nif (v.isBinary)\n{\n    msg.payload = [\n        {\n            measurement: msg.name,\n            fields: {\n                value: msg.value,\n                valueBinary: v.value\n            },\n            tags:{\n                hub: msg.hubId ? msg.hubId : \"HE1\",\n                deviceId: msg.deviceId,\n                displayName: msg.displayName,\n                unit: msg.unit\n            },\n            timestamp: new Date()\n        }\n    ]    \n}\nelse\n{\n    msg.payload = [\n        {\n            measurement: msg.name,\n            fields: {\n                value: (Array.isArray(v.value) ? v.value.join(',') : v.value),\n            },\n            tags:{\n                hub: msg.hubId ? msg.hubId : \"HE1\",\n                deviceId: msg.deviceId,\n                displayName: msg.displayName,\n                unit: msg.unit\n            },\n            timestamp: new Date()\n        }\n    ]\n}\n//console.log(util.inspect(msg, {showHidden: false, depth: null}))\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 960,
+        "y": 120,
+        "wires": [
+            [
+                "a53b5b74.207808"
+            ]
+        ]
+    },
+    {
+        "id": "a53b5b74.207808",
+        "type": "influxdb batch",
+        "z": "d3fe7906.c98cf8",
+        "influxdb": "227f748e.a9c7fc",
+        "precision": "",
+        "retentionPolicy": "",
+        "name": "",
+        "x": 1210,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "e021ed07.18972",
+        "type": "http request",
+        "z": "d3fe7906.c98cf8",
+        "name": "Get Temps",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "http://[your-ip]/apps/api/[maker-api]/attribute/temperature?access_token=[access-token]",
+        "tls": "",
+        "proxy": "",
+        "x": 310,
+        "y": 200,
+        "wires": [
+            [
+                "ed375789.8968b8"
+            ]
+        ]
+    },
+    {
+        "id": "d9fa6d0a.a765a",
+        "type": "splitter",
+        "z": "d3fe7906.c98cf8",
+        "name": "Split payload array",
+        "property": "payload",
+        "x": 490,
+        "y": 240,
+        "wires": [
+            [
+                "51241053.5bca9"
+            ]
+        ]
+    },
+    {
+        "id": "e862a8ef.6323e8",
+        "type": "comment",
+        "z": "d3fe7906.c98cf8",
+        "name": "Calls Maker API every hour",
+        "info": "",
+        "x": 130,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "e0173fa3.3fae2",
+        "type": "inject",
+        "z": "d3fe7906.c98cf8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "3600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 110,
+        "y": 220,
+        "wires": [
+            [
+                "e021ed07.18972",
+                "831162e8.546b"
+            ]
+        ]
+    },
+    {
+        "id": "5e2a7ded.834124",
+        "type": "catch",
+        "z": "d3fe7906.c98cf8",
+        "name": "",
+        "scope": [
+            "e862a8ef.6323e8",
+            "4092165a.b0fc58",
+            "ac83b17c.ad064",
+            "64484b87.e62d44",
+            "831162e8.546b",
+            "e021ed07.18972",
+            "85925615.c36e68",
+            "a53b5b74.207808",
+            "9ed67807.976e38",
+            "523d6a99.b7df54",
+            "7891c733.1ec2d8",
+            "d9fa6d0a.a765a",
+            "e0173fa3.3fae2"
+        ],
+        "uncaught": false,
+        "x": 100,
+        "y": 560,
+        "wires": [
+            [
+                "4092165a.b0fc58",
+                "ac83b17c.ad064"
+            ]
+        ]
+    },
+    {
+        "id": "4092165a.b0fc58",
+        "type": "change",
+        "z": "d3fe7906.c98cf8",
+        "name": "Convert error.message to msg.payload",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "HE Logging has thrown an error",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 350,
+        "y": 560,
+        "wires": [
+            [
+                "523d6a99.b7df54"
+            ]
+        ]
+    },
+    {
+        "id": "523d6a99.b7df54",
+        "type": "debug",
+        "z": "d3fe7906.c98cf8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 610,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "ac83b17c.ad064",
+        "type": "logger",
+        "z": "d3fe7906.c98cf8",
+        "name": "Error Logger",
+        "filename": "/var/log/hubitat/nr-inf-errors.log",
+        "maxsize": "10",
+        "maxfiles": 10,
+        "complete": "true",
+        "console": false,
+        "file": true,
+        "debug": false,
+        "zip": true,
+        "logtype": "info",
+        "x": 270,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "831162e8.546b",
+        "type": "http request",
+        "z": "d3fe7906.c98cf8",
+        "name": "Get Batteries",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "http://[your-ip]/apps/api/[maker-api]/attribute/battery?access_token=[access-token]",
+        "tls": "",
+        "proxy": "",
+        "x": 310,
+        "y": 240,
+        "wires": [
+            [
+                "d9fa6d0a.a765a"
+            ]
+        ]
+    },
+    {
+        "id": "51241053.5bca9",
+        "type": "function",
+        "z": "d3fe7906.c98cf8",
+        "name": "Transform Battery",
+        "func": "var op = msg.payload;\n\nmsg.name = \"battery\";\nmsg.value = (op.attributes['battery'] === null ? 0 : op.attributes['battery']);\nmsg.deviceId = op.id;\nmsg.displayName = op.label;\nmsg.unit = '%';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 690,
+        "y": 240,
+        "wires": [
+            [
+                "7891c733.1ec2d8"
+            ]
+        ]
+    },
+    {
+        "id": "ed375789.8968b8",
+        "type": "splitter",
+        "z": "d3fe7906.c98cf8",
+        "name": "Split payload array",
+        "property": "payload",
+        "x": 490,
+        "y": 200,
+        "wires": [
+            [
+                "3f62a5ce.e5f93a"
+            ]
+        ]
+    },
+    {
+        "id": "3f62a5ce.e5f93a",
+        "type": "function",
+        "z": "d3fe7906.c98cf8",
+        "name": "Transform Temp",
+        "func": "var op = msg.payload;\n\nmsg.name = \"temperature\";\nmsg.value = op.attributes['temperature'];\nmsg.deviceId = op.id;\nmsg.displayName = op.label;\nmsg.unit = 'F';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 680,
+        "y": 200,
+        "wires": [
+            [
+                "7891c733.1ec2d8"
+            ]
+        ]
+    },
+    {
+        "id": "ad49e56f.20d8f8",
+        "type": "websocket-client",
+        "z": "",
+        "path": "ws://192.168.1.110/eventsocket",
+        "tls": "",
+        "wholemsg": "true"
+    },
+    {
+        "id": "227f748e.a9c7fc",
+        "type": "influxdb",
+        "z": "",
+        "hostname": "localhost",
+        "port": "8086",
+        "protocol": "http",
+        "database": "hubitat_nodered",
+        "name": "",
+        "usetls": false,
+        "tls": ""
+    }
+]
