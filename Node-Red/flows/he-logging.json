@@ -18,7 +18,7 @@
         "wires": [
             [
                 "ea94de21.c963d",
-                "d4696c28.da993"
+                "b03a9a19.0765e8"
             ]
         ]
     },
@@ -28,8 +28,8 @@
         "z": "97f64ca.d04b7b",
         "mydb": "b443bf10.3a478",
         "name": "Logging DB",
-        "x": 1330,
-        "y": 180,
+        "x": 1270,
+        "y": 80,
         "wires": [
             []
         ]
@@ -42,7 +42,7 @@
         "func": "var query = \"INSERT INTO logs(`name`,`msg`,`id`,`time`,`type`,`level`) VALUES(\";\n//var name = msg.name.replace(/'/g, \"\\'\");\n//var msg = msg.msg.replace(/'/g, \"\\'\");\n\nquery += \"'\" + msg.name + \"',\";\nquery += \"'\" + msg.msg + \"',\";\nquery += msg.id + ',';\nquery += \"'\" + msg.time + \"',\";\nquery += \"'\" + msg.type + \"',\";\nquery += \"'\" + msg.level + \"')\";\n\nmsg.topic = query;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 1100,
+        "x": 640,
         "y": 80,
         "wires": [
             [
@@ -63,7 +63,7 @@
             [
                 "19d853b5.dd045c",
                 "f6d78ae6.9b33c8",
-                "14156578.ca310b"
+                "837d6d2b.cd3d4"
             ]
         ]
     },
@@ -75,8 +75,8 @@
         "func": "var query = \"INSERT INTO events(`source`,`name`,`displayName`,`value`,`unit`,`deviceId`,`hubId`,`locationId`,`installedAppId`,`descriptionText`) VALUES(\";\n//var name = msg.name.replace(/'/g, \"\\'\");\n//var msg = msg.msg.replace(/'/g, \"\\'\");\n\nquery += \"'\" + msg.source + \"',\";\nquery += \"'\" + msg.name + \"',\";\nquery += \"'\" + msg.displayName + \"',\";\nquery += \"'\" + msg.value + \"',\";\nquery += \"'\" + msg.unit + \"',\";\nquery += msg.deviceId           === null ? 'null,' : msg.deviceId + ',';\nquery += msg.hubId              === null ? 'null,' : msg.hubId + ',';\nquery += msg.locationId         === null ? 'null,' : msg.locationId + ',';\nquery += msg.installedAppId     === null ? 'null,' : msg.installedAppId + ',';\nquery += msg.descriptionText    === null ? 'null)' : \"'\" + msg.descriptionText + \"')\";\n\nmsg.topic = query;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 1100,
-        "y": 120,
+        "x": 640,
+        "y": 160,
         "wires": [
             [
                 "78ade93b.b1bac8"
@@ -89,31 +89,15 @@
         "z": "97f64ca.d04b7b",
         "name": "",
         "scope": [
-            "ea99d794.26c8d8",
-            "1935fea3.313a31",
-            "4960662b.bc34c8",
-            "72bb48bf.fe9398",
-            "f6d78ae6.9b33c8",
-            "ed81fd66.e69b7",
-            "b726ad7a.fa073",
-            "7990ff36.983b4",
-            "13d86cdc.bb08a3",
             "1b825032.f16ee",
             "a76fb58c.e649d8",
-            "78ade93b.b1bac8",
-            "ce199a1d.01e3a8",
-            "fd413858.152d38",
-            "ea94de21.c963d",
-            "7a8de778.339c68",
-            "f39ed3f8.44b23",
-            "4d2f4537.3de19c"
+            "78ade93b.b1bac8"
         ],
-        "x": 80,
-        "y": 800,
+        "x": 70,
+        "y": 720,
         "wires": [
             [
-                "5b6da7c4.6ec298",
-                "54d8b82.c034048"
+                "5b6da7c4.6ec298"
             ]
         ]
     },
@@ -137,7 +121,7 @@
         "to": "",
         "reg": false,
         "x": 330,
-        "y": 800,
+        "y": 720,
         "wires": [
             [
                 "c3c2bc48.01bc5"
@@ -155,8 +139,28 @@
         "tostatus": false,
         "complete": "true",
         "x": 590,
-        "y": 800,
+        "y": 720,
         "wires": []
+    },
+    {
+        "id": "46208e9a.ca969",
+        "type": "inject",
+        "z": "97f64ca.d04b7b",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "900",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 110,
+        "y": 420,
+        "wires": [
+            [
+                "7990ff36.983b4"
+            ]
+        ]
     },
     {
         "id": "7891807e.90163",
@@ -166,11 +170,11 @@
         "func": "var query = \"INSERT INTO temperatures(deviceId, displayName, `value`) VALUES(\";\n\nquery += msg.payload.id + \",\";\nquery += \"'\" + msg.payload.label + \"',\";\nquery += msg.payload.attributes['temperature'];\nquery += \")\";\n\nmsg.topic = query;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 1100,
-        "y": 240,
+        "x": 1080,
+        "y": 420,
         "wires": [
             [
-                "78ade93b.b1bac8"
+                "ce199a1d.01e3a8"
             ]
         ]
     },
@@ -181,14 +185,13 @@
         "name": "Get Devices with Capabilites",
         "method": "GET",
         "ret": "obj",
-        "url": "",
+        "url": """",
         "tls": "",
-        "x": 320,
-        "y": 400,
+        "x": 340,
+        "y": 420,
         "wires": [
             [
-                "b726ad7a.fa073",
-                "ed81fd66.e69b7"
+                "b726ad7a.fa073"
             ]
         ]
     },
@@ -197,11 +200,11 @@
         "type": "function",
         "z": "97f64ca.d04b7b",
         "name": "Find Temperature Devices",
-        "func": "var devices = [];\nmsg.payload.forEach(function(device) {\n    if(device.capabilities) {\n        for (var i=0; i<device.capabilities.length;i++) {\n            if(device.capabilities[i] == 'TemperatureMeasurement')\n                devices.push(device);\n        }\n    }\n});\n\nmsg.payload = devices;\nreturn msg;",
+        "func": "var devices = [];\nmsg.payload.forEach(function(device) {\n    if(device.capabilities && device.capabilities[0] == 'TemperatureMeasurement')\n        devices.push(device);\n});\n\nmsg.payload = devices;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 570,
-        "y": 360,
+        "x": 610,
+        "y": 420,
         "wires": [
             [
                 "f1a7c34d.89ce1"
@@ -214,12 +217,24 @@
         "z": "97f64ca.d04b7b",
         "name": "Split payload array",
         "property": "payload",
-        "x": 790,
-        "y": 360,
+        "x": 850,
+        "y": 420,
         "wires": [
             [
-                "d1d5fec0.8428a"
+                "7891807e.90163"
             ]
+        ]
+    },
+    {
+        "id": "ce199a1d.01e3a8",
+        "type": "mysql",
+        "z": "97f64ca.d04b7b",
+        "mydb": "b443bf10.3a478",
+        "name": "Logging DB",
+        "x": 1270,
+        "y": 420,
+        "wires": [
+            []
         ]
     },
     {
@@ -227,11 +242,11 @@
         "type": "function",
         "z": "97f64ca.d04b7b",
         "name": "Find Battery Devices",
-        "func": "var devices = [];\nmsg.payload.forEach(function(device) {\n    if(device.capabilities) {\n        for (var i=0; i<device.capabilities.length;i++) {\n            if(device.capabilities[i] == 'Battery')\n                devices.push(device);\n        }\n    }\n});\n\nmsg.payload = devices;\nreturn msg;",
+        "func": "var devices = [];\nmsg.payload.forEach(function(device) {\n    if(device.capabilities && device.capabilities[1] == 'Battery')\n        devices.push(device);\n});\n\nmsg.payload = devices;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 560,
-        "y": 440,
+        "x": 600,
+        "y": 560,
         "wires": [
             [
                 "7f6d0f15.9d5fa"
@@ -244,11 +259,11 @@
         "z": "97f64ca.d04b7b",
         "name": "Split payload array",
         "property": "payload",
-        "x": 790,
-        "y": 440,
+        "x": 850,
+        "y": 560,
         "wires": [
             [
-                "1db93240.af0dde"
+                "36f8d654.2bf7ba"
             ]
         ]
     },
@@ -260,12 +275,24 @@
         "func": "var query = \"INSERT INTO batteries(deviceId, displayName, `value`) VALUES(\";\n\nquery += msg.payload.id + \",\";\nquery += \"'\" + msg.payload.label + \"',\";\nquery += msg.payload.attributes['battery'];\nquery += \")\";\n\nmsg.topic = query;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 1100,
-        "y": 280,
+        "x": 1080,
+        "y": 560,
         "wires": [
             [
-                "78ade93b.b1bac8"
+                "fd413858.152d38"
             ]
+        ]
+    },
+    {
+        "id": "fd413858.152d38",
+        "type": "mysql",
+        "z": "97f64ca.d04b7b",
+        "mydb": "b443bf10.3a478",
+        "name": "Logging DB",
+        "x": 1270,
+        "y": 560,
+        "wires": [
+            []
         ]
     },
     {
@@ -276,8 +303,8 @@
         "func": "var query = \"INSERT INTO motions(deviceId, displayName, `value`) VALUES(\";\n\nquery += msg.deviceId + \",\";\nquery += \"'\" + msg.displayName + \"',\";\nquery += \"'\" + msg.value + \"'\";\nquery += \")\";\n\nmsg.topic = query;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 1100,
-        "y": 160,
+        "x": 640,
+        "y": 200,
         "wires": [
             [
                 "78ade93b.b1bac8"
@@ -306,14 +333,14 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 710,
-        "y": 180,
+        "x": 410,
+        "y": 220,
         "wires": [
             [
-                "84fa4b5e.fa9738"
+                "9a69f4a5.deaff8"
             ],
             [
-                "1530ffac.76d31"
+                "cbbf29b1.b06698"
             ]
         ]
     },
@@ -325,8 +352,8 @@
         "func": "var query = \"INSERT INTO switches(deviceId, displayName, `value`) VALUES(\";\n\nquery += msg.deviceId + \",\";\nquery += \"'\" + msg.displayName + \"',\";\nquery += \"'\" + msg.value + \"'\";\nquery += \")\";\n\nmsg.topic = query;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 1100,
-        "y": 200,
+        "x": 640,
+        "y": 240,
         "wires": [
             [
                 "78ade93b.b1bac8"
@@ -344,13 +371,23 @@
         "wires": []
     },
     {
+        "id": "904730a4.46b0b",
+        "type": "comment",
+        "z": "97f64ca.d04b7b",
+        "name": "Switches on msg.name to log motions and switches",
+        "info": "",
+        "x": 950,
+        "y": 220,
+        "wires": []
+    },
+    {
         "id": "1935fea3.313a31",
         "type": "comment",
         "z": "97f64ca.d04b7b",
-        "name": "Calls Maker API every hour",
+        "name": "Calls Maker API every 15 minutes to log temperatures. (Fixes issue with temps/batteries only updating when they want to via websockets)",
         "info": "",
-        "x": 130,
-        "y": 360,
+        "x": 480,
+        "y": 380,
         "wires": []
     },
     {
@@ -361,17 +398,44 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "repeat": "3600",
+        "repeat": "21600",
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
         "x": 110,
-        "y": 400,
+        "y": 560,
         "wires": [
             [
-                "7990ff36.983b4"
+                "13d86cdc.bb08a3"
             ]
         ]
+    },
+    {
+        "id": "13d86cdc.bb08a3",
+        "type": "http request",
+        "z": "97f64ca.d04b7b",
+        "name": "Get Devices with Capabilites",
+        "method": "GET",
+        "ret": "obj",
+        "url": """",
+        "tls": "",
+        "x": 340,
+        "y": 560,
+        "wires": [
+            [
+                "ed81fd66.e69b7"
+            ]
+        ]
+    },
+    {
+        "id": "4960662b.bc34c8",
+        "type": "comment",
+        "z": "97f64ca.d04b7b",
+        "name": "Calls Maker API every 6 hours to log batteries. (Fixes issue with temps/batteries only updating when they want to via websockets)",
+        "info": "",
+        "x": 450,
+        "y": 520,
+        "wires": []
     },
     {
         "id": "ea94de21.c963d",
@@ -410,400 +474,24 @@
         "wires": []
     },
     {
-        "id": "54d8b82.c034048",
-        "type": "logger",
+        "id": "311185f1.e9d61a",
+        "type": "comment",
         "z": "97f64ca.d04b7b",
-        "name": "Error Logger",
-        "filename": "/var/log/hubitat/nr-errors.log",
-        "maxsize": "10",
-        "maxfiles": 10,
-        "complete": "true",
-        "console": false,
-        "file": true,
-        "debug": false,
-        "zip": true,
-        "logtype": "info",
-        "x": 250,
-        "y": 760,
+        "name": "Log all entries to file on server for backup",
+        "info": "",
+        "x": 580,
+        "y": 120,
         "wires": []
     },
     {
-        "id": "7a8de778.339c68",
-        "type": "string",
+        "id": "e5b4b2c1.92991",
+        "type": "comment",
         "z": "97f64ca.d04b7b",
-        "name": "",
-        "methods": [
-            {
-                "name": "stripTags",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": ""
-                    }
-                ]
-            },
-            {
-                "name": "replaceAll",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "'"
-                    },
-                    {
-                        "type": "str",
-                        "value": "\\'"
-                    }
-                ]
-            }
-        ],
-        "prop": "msg",
-        "propout": "msg",
-        "object": "msg",
-        "objectout": "msg",
-        "x": 930,
-        "y": 80,
-        "wires": [
-            [
-                "b03a9a19.0765e8"
-            ]
-        ]
-    },
-    {
-        "id": "f39ed3f8.44b23",
-        "type": "string",
-        "z": "97f64ca.d04b7b",
-        "name": "Replace '",
-        "methods": [
-            {
-                "name": "replaceAll",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "'"
-                    },
-                    {
-                        "type": "str",
-                        "value": "\""
-                    }
-                ]
-            }
-        ],
-        "prop": "descriptionText",
-        "propout": "descriptionText",
-        "object": "msg",
-        "objectout": "msg",
-        "x": 700,
-        "y": 140,
-        "wires": [
-            [
-                "837d6d2b.cd3d4"
-            ]
-        ]
-    },
-    {
-        "id": "fe9dba1d.de1858",
-        "type": "inject",
-        "z": "97f64ca.d04b7b",
-        "name": "02:00 Daily",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "",
-        "crontab": "00 02 * * *",
-        "once": false,
-        "onceDelay": 0.1,
-        "x": 110,
-        "y": 640,
-        "wires": [
-            [
-                "72bb48bf.fe9398"
-            ]
-        ]
-    },
-    {
-        "id": "72bb48bf.fe9398",
-        "type": "http request",
-        "z": "97f64ca.d04b7b",
-        "name": "Download backup",
-        "method": "GET",
-        "ret": "bin",
-        "url": "http://192.168.1.110/hub/backupDB?fileName=latest",
-        "tls": "",
-        "x": 310,
-        "y": 640,
-        "wires": [
-            [
-                "4d2f4537.3de19c"
-            ]
-        ]
-    },
-    {
-        "id": "ea99d794.26c8d8",
-        "type": "file",
-        "z": "97f64ca.d04b7b",
-        "name": "Backup File",
-        "filename": "",
-        "appendNewline": false,
-        "createDir": true,
-        "overwriteFile": "true",
-        "x": 650,
-        "y": 640,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "4d2f4537.3de19c",
-        "type": "string",
-        "z": "97f64ca.d04b7b",
-        "name": "",
-        "methods": [
-            {
-                "name": "strip",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "attachment; filename="
-                    }
-                ]
-            },
-            {
-                "name": "prepend",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "/var/log/hubitat/backups/"
-                    }
-                ]
-            }
-        ],
-        "prop": "headers.content-disposition",
-        "propout": "filename",
-        "object": "msg",
-        "objectout": "msg",
-        "x": 490,
-        "y": 640,
-        "wires": [
-            [
-                "ea99d794.26c8d8"
-            ]
-        ]
-    },
-    {
-        "id": "1db93240.af0dde",
-        "type": "string",
-        "z": "97f64ca.d04b7b",
-        "name": "",
-        "methods": [
-            {
-                "name": "replaceAll",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "'"
-                    },
-                    {
-                        "type": "str",
-                        "value": "\\'"
-                    }
-                ]
-            }
-        ],
-        "prop": "payload.label",
-        "propout": "payload.label",
-        "object": "msg",
-        "objectout": "msg",
-        "x": 930,
+        "name": "Log all entries to file on server for backup",
+        "info": "",
+        "x": 580,
         "y": 280,
-        "wires": [
-            [
-                "36f8d654.2bf7ba"
-            ]
-        ]
-    },
-    {
-        "id": "d1d5fec0.8428a",
-        "type": "string",
-        "z": "97f64ca.d04b7b",
-        "name": "",
-        "methods": [
-            {
-                "name": "replaceAll",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "'"
-                    },
-                    {
-                        "type": "str",
-                        "value": "\\'"
-                    }
-                ]
-            }
-        ],
-        "prop": "payload.label",
-        "propout": "payload.label",
-        "object": "msg",
-        "objectout": "msg",
-        "x": 930,
-        "y": 240,
-        "wires": [
-            [
-                "7891807e.90163"
-            ]
-        ]
-    },
-    {
-        "id": "84fa4b5e.fa9738",
-        "type": "string",
-        "z": "97f64ca.d04b7b",
-        "name": "",
-        "methods": [
-            {
-                "name": "replaceAll",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "'"
-                    },
-                    {
-                        "type": "str",
-                        "value": "\""
-                    }
-                ]
-            },
-            {
-                "name": "stripTags",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": ""
-                    }
-                ]
-            }
-        ],
-        "prop": "name",
-        "propout": "msg",
-        "object": "msg",
-        "objectout": "msg",
-        "x": 930,
-        "y": 160,
-        "wires": [
-            [
-                "9a69f4a5.deaff8"
-            ]
-        ]
-    },
-    {
-        "id": "1530ffac.76d31",
-        "type": "string",
-        "z": "97f64ca.d04b7b",
-        "name": "",
-        "methods": [
-            {
-                "name": "replaceAll",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "'"
-                    },
-                    {
-                        "type": "str",
-                        "value": "\""
-                    }
-                ]
-            },
-            {
-                "name": "stripTags",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": ""
-                    }
-                ]
-            }
-        ],
-        "prop": "name",
-        "propout": "msg",
-        "object": "msg",
-        "objectout": "msg",
-        "x": 930,
-        "y": 200,
-        "wires": [
-            [
-                "cbbf29b1.b06698"
-            ]
-        ]
-    },
-    {
-        "id": "d4696c28.da993",
-        "type": "string",
-        "z": "97f64ca.d04b7b",
-        "name": "",
-        "methods": [
-            {
-                "name": "stripTags",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": ""
-                    }
-                ]
-            },
-            {
-                "name": "replaceAll",
-                "params": [
-                    {
-                        "type": "str",
-                        "value": "'"
-                    },
-                    {
-                        "type": "str",
-                        "value": "\\'"
-                    }
-                ]
-            }
-        ],
-        "prop": "name",
-        "propout": "name",
-        "object": "msg",
-        "objectout": "msg",
-        "x": 810,
-        "y": 80,
-        "wires": [
-            [
-                "7a8de778.339c68"
-            ]
-        ]
-    },
-    {
-        "id": "14156578.ca310b",
-        "type": "switch",
-        "z": "97f64ca.d04b7b",
-        "name": "descriptionText",
-        "property": "descriptionText",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "null"
-            },
-            {
-                "t": "nnull"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 520,
-        "y": 140,
-        "wires": [
-            [
-                "837d6d2b.cd3d4"
-            ],
-            [
-                "f39ed3f8.44b23"
-            ]
-        ]
+        "wires": []
     },
     {
         "id": "a188bb97.72e918",
